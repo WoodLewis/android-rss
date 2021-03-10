@@ -16,6 +16,8 @@
 
 package org.mcsoxford.rss;
 
+import com.sun.jndi.toolkit.url.Uri;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -65,7 +67,7 @@ public class RSSReader implements java.io.Closeable {
     }
 
     /**
-     * Send HTTP GET request and parse the XML response to construct an in-memory
+     * Send HTTP GET request by default timeout and parse the XML response to construct an in-memory
      * representation of an RSS 2.0 feed.
      *
      * @param uri RSS 2.0 feed URI
@@ -75,12 +77,27 @@ public class RSSReader implements java.io.Closeable {
      * @throws RSSFault if an unrecoverable IO error has occurred
      */
     public RSSFeed load(String uri) throws RSSReaderException {
+        return load(uri,3000,3000);
+    }
+
+    /**
+     * Send HTTP GET request and parse the XML response to construct an in-memory
+     * representation of an RSS 2.0 feed.
+     * @param uri  RSS 2.0 feed URI
+     * @param connectTimeout socket connect timeout
+     * @param readTimeout socket read timeout
+     * @return n in-memory representation of downloaded RSS feed
+     * @throws RSSReaderException
+     */
+    public RSSFeed load(String uri,int connectTimeout,int readTimeout) throws RSSReaderException {
         InputStream feedStream = null;
         try {
             URL url = new URL(uri);
             // Send GET request to URI
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            conn.setConnectTimeout(connectTimeout);
+            conn.setReadTimeout(readTimeout);
             conn.connect();
 
             // Check if server response is valid
@@ -94,7 +111,7 @@ public class RSSReader implements java.io.Closeable {
             RSSFeed feed = parser.parse(feedStream);
 
             if (feed.getLink() == null) {
-                feed.setLink(android.net.Uri.parse(uri));
+                feed.setLink(uri);
             }
 
             return feed;

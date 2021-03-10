@@ -23,14 +23,14 @@ package org.mcsoxford.rss;
  */
 public final class MediaEnclosure {
 
-    private final android.net.Uri url;
+    private final String url;
     private final int length;
     private final String mimeType;
 
     /**
      * Returns the URL of the enclosure. The return value is never {@code null}.
      */
-    public android.net.Uri getUrl() {
+    public String getUrl() {
         return url;
     }
 
@@ -52,7 +52,7 @@ public final class MediaEnclosure {
     /**
      * Internal constructor for RSSHandler
      */
-    MediaEnclosure(android.net.Uri url, int length, String mimeType) {
+    MediaEnclosure(String url, int length, String mimeType) {
         this.url = url;
         this.length = length;
         this.mimeType = mimeType;

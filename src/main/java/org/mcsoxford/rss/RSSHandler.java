@@ -144,7 +144,7 @@ class RSSHandler extends org.xml.sax.helpers.DefaultHandler {
   private final Setter SET_LINK = new ContentSetter() {
     @Override
     public void set(String link) {
-      final android.net.Uri uri = android.net.Uri.parse(link);
+      final String uri = link;
       if (item == null) {
         feed.setLink(uri);
       } else {
@@ -248,7 +248,7 @@ class RSSHandler extends org.xml.sax.helpers.DefaultHandler {
         return;
       }
 
-      item.addThumbnail(new MediaThumbnail(android.net.Uri.parse(url), height, width));
+      item.addThumbnail(new MediaThumbnail(url, height, width));
     }
 
   };
@@ -280,7 +280,7 @@ class RSSHandler extends org.xml.sax.helpers.DefaultHandler {
 			}
 
 			MediaEnclosure enclosure = new MediaEnclosure(
-					android.net.Uri.parse(url), length, mimeType);
+					url, length, mimeType);
 			item.setEnclosure(enclosure);
 		}
 	};

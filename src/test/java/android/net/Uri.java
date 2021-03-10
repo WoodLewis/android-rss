@@ -11,8 +11,8 @@ public final class Uri {
     this.uri = uri;
   }
 
-  public static Uri parse(String uri) {
-    return new Uri(uri);
+  public static String parse(String uri) {
+    return uri;
   }
 
   /**

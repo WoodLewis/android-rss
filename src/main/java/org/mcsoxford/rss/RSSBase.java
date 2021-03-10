@@ -26,7 +26,7 @@ import java.util.ArrayList;
 abstract class RSSBase {
 
   private String title;
-  private android.net.Uri link;
+  private String link;
   private String description;
   private java.util.List<String> categories;
   private java.util.Date pubdate;
@@ -47,7 +47,7 @@ abstract class RSSBase {
     return description;
   }
 
-  public android.net.Uri getLink() {
+  public String getLink() {
     return link;
   }
 
@@ -67,7 +67,7 @@ abstract class RSSBase {
     this.title = title;
   }
 
-  void setLink(android.net.Uri link) {
+  void setLink(String link) {
     this.link = link;
   }
 

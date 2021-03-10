@@ -16,8 +16,7 @@
 
 package org.mcsoxford.rss;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -48,7 +47,6 @@ public class RSSParser implements RSSParserSPI {
    * @return in-memory representation of RSS feed
    * @throws RSSFault if an unrecoverable parse error occurs
    */
-  @Override
   public RSSFeed parse(InputStream feed) {
     try {
       // Since SAXParserFactory implementations are not guaranteed to be
@@ -85,9 +83,28 @@ public class RSSParser implements RSSParserSPI {
       throw new IllegalArgumentException("RSS feed must not be null.");
     }
 
+    StringBuffer buffer=new StringBuffer();
+    try (BufferedReader reader=new BufferedReader(new InputStreamReader(feed))){
+      char[] tmp=new char[1024];
+      int size=0;
+      while((size=reader.read(tmp))>0){
+        buffer.append(tmp,0,size);
+      }
+    }
+    byte[] bytes= buffer.toString().replaceAll(
+            "[\ufeff\u0001\u0002\u0003\u0004" +
+                    "\u0005\u0006\u0007\u0008" +
+                    "\u000b\u000c\u000e\u0010" +
+                    "\u0011\u0012\u0013\u0014" +
+                    "\u0015\u0016\u0017\u0018" +
+                    "\u0019\u001a\u001b\u001c" +
+                    "\u001d\u001f\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]","").getBytes("UTF-8");
+    ByteArrayInputStream stream=new ByteArrayInputStream(bytes);
+
+
     // SAX automatically detects the correct character encoding from the stream
     // See also http://www.w3.org/TR/REC-xml/#sec-guessing
-    final InputSource source = new InputSource(feed);
+    final InputSource source = new InputSource(stream);
     final XMLReader xmlreader = parser.getXMLReader();
     final RSSHandler handler = new RSSHandler(config);
 

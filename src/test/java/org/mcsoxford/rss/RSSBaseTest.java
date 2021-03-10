@@ -1,5 +1,6 @@
 package org.mcsoxford.rss;
 
+import android.net.Uri;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,23 +50,23 @@ public class RSSBaseTest {
     RSSBase other = new Foo();
     assertTrue(base.equals(other));
 
-    other.setLink(android.net.Uri.parse("http://example.com/other"));
+    other.setLink(Uri.parse("http://example.com/other"));
     assertFalse(base.equals(other));
   }
 
   @Test
   public void equalsOtherLink() {
     RSSBase other = new Foo();
-    other.setLink(android.net.Uri.parse("http://example.com/other"));
-    base.setLink(android.net.Uri.parse("http://example.com/"));
+    other.setLink(Uri.parse("http://example.com/other"));
+    base.setLink(Uri.parse("http://example.com/"));
     assertFalse(base.equals(other));
   }
 
   @Test
   public void equalsLink() {
     RSSBase other = new Foo();
-    other.setLink(android.net.Uri.parse("http://example.com/"));
-    base.setLink(android.net.Uri.parse("http://example.com/"));
+    other.setLink(Uri.parse("http://example.com/"));
+    base.setLink(Uri.parse("http://example.com/"));
     assertTrue(base.equals(other));
   }
 
